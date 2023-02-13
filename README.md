@@ -16,7 +16,7 @@ Add-Migration InitialCreate
 Update-Database
 ```
 ## 3.
-Most likely will require to front-end packages. 
+Most likely will require to update front-end packages. 
 ```
 npm i
 ```
