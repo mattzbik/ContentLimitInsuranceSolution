@@ -15,8 +15,13 @@ In Package Manager Console copy the code below.
 Add-Migration InitialCreate
 Update-Database
 ```
-
 ## 3.
+Most likely will require to front-end packages. 
+```
+npm i
+```
+
+## 4.
 Click F5 on your keyboard or click Debug -> Start Debugging
 
 ## Feedback
