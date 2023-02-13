@@ -13,7 +13,6 @@ export interface UseGetItemData {
 	totalValue: number;
 	mappedCategories: Map<Categories, MappedItems>;
 	categories: string[];
-	getItems: () => Promise<void>;
 	deleteItem: (id: number) => Promise<void>;
 	addItem: (item: Partial<ItemData>) => Promise<void>;
 }
@@ -74,9 +73,7 @@ export const useGetItems = (): ApiResponse<UseGetItemData> => {
 	);
 
 	useEffect(() => {
-		async () => {
-			await fetchData();
-		};
+		fetchData();
 	}, [fetchData]);
 
 	useEffect(() => {
@@ -85,7 +82,6 @@ export const useGetItems = (): ApiResponse<UseGetItemData> => {
 				data: {
 					addItem: handleAddItem,
 					deleteItem: handleDelete,
-					getItems: fetchData,
 					totalValue: tempData.reduce<number>((acc, curr) => acc + curr.value, 0),
 					categories: tempData.reduce<string[]>(
 						(acc, curr) => Array.from(new Set([...acc, categories[curr.category]])),
@@ -110,7 +106,7 @@ export const useGetItems = (): ApiResponse<UseGetItemData> => {
 				error: undefined,
 			});
 		}
-	}, [data.loading, handleAddItem, handleDelete, tempData]);
+	}, [data.loading, fetchData, handleAddItem, handleDelete, tempData]);
 
 	return data;
 };
