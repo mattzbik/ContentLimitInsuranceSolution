@@ -74,7 +74,9 @@ export const useGetItems = (): ApiResponse<UseGetItemData> => {
 	);
 
 	useEffect(() => {
-		fetchData();
+		async () => {
+			await fetchData();
+		};
 	}, [fetchData]);
 
 	useEffect(() => {
@@ -84,32 +86,25 @@ export const useGetItems = (): ApiResponse<UseGetItemData> => {
 					addItem: handleAddItem,
 					deleteItem: handleDelete,
 					getItems: fetchData,
-					totalValue: tempData.reduce<number>(
-						(acc, curr) => acc + curr.value,
-						0
-					),
+					totalValue: tempData.reduce<number>((acc, curr) => acc + curr.value, 0),
 					categories: tempData.reduce<string[]>(
-						(acc, curr) =>
-							Array.from(new Set([...acc, categories[curr.category]])),
+						(acc, curr) => Array.from(new Set([...acc, categories[curr.category]])),
 						[]
 					),
-					mappedCategories: tempData.reduce<UseGetItemData["mappedCategories"]>(
-						(acc, curr) => {
-							const { category: c } = curr;
-							const cat = acc.get(categories[c]);
-							if (!cat) {
-								acc.set(categories[c], {
-									subTotalValue: curr.value,
-									items: [curr],
-								});
-							} else {
-								cat.items.push(curr);
-								cat.subTotalValue += curr.value;
-							}
-							return acc;
-						},
-						new Map()
-					),
+					mappedCategories: tempData.reduce<UseGetItemData["mappedCategories"]>((acc, curr) => {
+						const { category: c } = curr;
+						const cat = acc.get(categories[c]);
+						if (!cat) {
+							acc.set(categories[c], {
+								subTotalValue: curr.value,
+								items: [curr],
+							});
+						} else {
+							cat.items.push(curr);
+							cat.subTotalValue += curr.value;
+						}
+						return acc;
+					}, new Map()),
 				},
 				loading: false,
 				error: undefined,
